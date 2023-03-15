@@ -9,7 +9,8 @@
 ///
 /// This library enables the use of the Radio Chip TEA5767.
 ///
-/// More documentation and source code is available at http://www.mathertel.de/Arduino
+/// More documentation is available at http://www.mathertel.de/Arduino
+/// Source Code is available on https://github.com/mathertel/Radio
 ///
 /// good links for hints how to implement this chip:
 /// http://www.sparkfun.com/datasheets/Wireless/General/TEA5767.pdf
@@ -75,12 +76,15 @@
 
 // initialize the extra variables in SI4703
 TEA5767::TEA5767() {
+  _maxVolume = 1;
 }
 
 // initialize all internals.
 bool TEA5767::init() {
   bool result = false; // no chip found yet.
   DEBUG_FUNC0("init");
+
+  RADIO::init();  // will create reset impulse
 
   registers[0] = 0x00;
   registers[1] = 0x00;
@@ -93,7 +97,6 @@ bool TEA5767::init() {
   registers[REG_5] = REG_5_DTC; // 75 ms Europe setup
 #endif
   Wire.begin();
-
 
   return(result);
 } // init()
@@ -108,18 +111,18 @@ void TEA5767::term()
 
 // ----- Volume control -----
 
-/// setVolume is a non-existing function in TEA5767. It will always me MAXVOLUME.
-void TEA5767::setVolume(uint8_t newVolume)
+/// setVolume is a non-existing function in TEA5767. It will always be 1.
+void TEA5767::setVolume(int8_t newVolume)
 {
-  DEBUG_FUNC0("setVolume");
-  RADIO::setVolume(MAXVOLUME);
+  (void)newVolume;
+  RADIO::setVolume(1);
 } // setVolume()
 
 
-/// setBassBoost is a non-existing function in TEA5767. It will never be acivated.
+/// setBassBoost is a non-existing function in TEA5767. It will never be activated.
 void TEA5767::setBassBoost(bool switchOn)
 {
-  DEBUG_FUNC0("setBassBoost");
+  (void)switchOn;
   RADIO::setBassBoost(false);
 } // setBassBoost()
 
@@ -218,12 +221,14 @@ void TEA5767::setFrequency(RADIO_FREQ newF) {
 /// Start seek mode upwards.
 void TEA5767::seekUp(bool toNextSender) {
   DEBUG_FUNC0("seekUp");
+  (void)toNextSender;
   _seek(true);
 } // seekUp()
 
 
 /// Start seek mode downwards.
 void TEA5767::seekDown(bool toNextSender) {
+  (void)toNextSender;
   _seek(false);
 } // seekDown()
 
@@ -292,6 +297,7 @@ void TEA5767::debugStatus()
 /// Seeks out the next available station
 void TEA5767::_seek(bool seekUp) {
   DEBUG_FUNC0("_seek");
+  (void)seekUp;
 } // _seek
 
 

@@ -19,3 +19,10 @@
 *.exe
 *.out
 *.app
+
+_*
+/.vscode
+/.development
+/build
+.gitignore
+*.code-workspace
